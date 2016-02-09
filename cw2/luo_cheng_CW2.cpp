@@ -17,7 +17,7 @@ public:
 	unsigned int get_x() const;	// get the value of x
 	unsigned int get_y() const; // get the value of y
 
-	static bool before(const Point&, const Point&); // comparaison between points for sorting algorithm
+	static bool before(const Point&, const Point&); // comparison between points for sorting algorithm
 };
 
 Point::Point(const Point& p){
