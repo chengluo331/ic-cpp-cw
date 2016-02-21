@@ -1,6 +1,6 @@
-n=10000;
-xmax = 80;
-ymax = 25;
+n=5000;
+xmax = 10000;
+ymax = 5000;
 
 fileID = fopen('skyline2.in','w');
 for i = 1:n

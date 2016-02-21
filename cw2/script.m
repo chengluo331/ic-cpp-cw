@@ -1,5 +1,5 @@
 clear;
-in = load('skyline2.in'); 
+in = load('skyline.in'); 
 j=1;
 
 for i=1:size(in,1)
