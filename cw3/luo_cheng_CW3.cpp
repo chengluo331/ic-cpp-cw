@@ -9,11 +9,22 @@ private:
 	int numerator, denominator;
 	void reduce();
 public:
+	// constructors
 	fraction(int n = 0, int d = 1) : numerator(n), denominator(d) { reduce(); }
-	fraction(const fraction& f){ numerator = f.numerator; denominator = f.denominator; reduce(); }
+	fraction(const fraction& f){ numerator = f.numerator; denominator = f.denominator; }
+	
+	// assignment
+	fraction& operator= (const fraction &f);
 
+	// comparison
 	bool operator< (const fraction &f) const;
+	bool operator== (const fraction &f) const;
+	bool operator!= (const fraction &f) const;
+	bool operator> (const fraction &f) const;
+	
+	fraction operator+ () const { return fraction(*this); }
 	fraction operator- () const { fraction res(-numerator, denominator); return res; }
+	
 	fraction operator+ (const fraction &f) const;	
 	fraction operator* (const fraction &f) const;
 	fraction operator- (const fraction &f) const;
@@ -29,7 +40,7 @@ public:
 	operator double() const;
 };
 
-
+// calculate gcd
 int gcd(int a, int b){
 	if (a < b) return gcd(b, a);
 	if (b == 0) return 0; // by convention define the gcd between 2 integers with a 0 is 0
@@ -38,6 +49,7 @@ int gcd(int a, int b){
 	return gcd(b, r);
 }
 
+// return 1 if positive -1 otherwise
 int sign(int x){
 	return (x > 0) - (x < 0);
 }
@@ -75,16 +87,30 @@ void fraction::reduce(){
 	numerator *= _sign;
 }
 
+// assignment
+fraction& fraction::operator= (const fraction &f){
+	if (this != &f){
+		numerator = f.numerator; denominator = f.denominator;
+	}
+	return *this;
+}
+
+// comparison
 bool fraction::operator< (const fraction &f) const{
 	return numerator*f.denominator < f.numerator*denominator;
 }
 
-fraction &fraction::operator+= (const fraction &f){
-	numerator = numerator*f.denominator + denominator*f.numerator;
-	denominator = denominator*f.denominator;
-	reduce();
-	return *this;
+bool fraction::operator== (const fraction &f) const{
+	return numerator==f.numerator && denominator==f.denominator;
 }
+
+bool fraction::operator!= (const fraction &f) const{
+	return !(*this==f);
+}
+
+bool fraction::operator> (const fraction &f) const{
+	return (*this!=f) && !(*this<f);
+}	
 
 fraction fraction::operator+ (const fraction &f) const{
 	fraction r(*this);
@@ -110,11 +136,16 @@ fraction fraction::operator+ (int i) const{
 	return *this + r;
 }
 
-
-fraction  fraction::operator- (int i) const{
+fraction fraction::operator- (int i) const{
 	return *this+(-1);
 }
 
+fraction &fraction::operator+= (const fraction &f){
+	numerator = numerator*f.denominator + denominator*f.numerator;
+	denominator = denominator*f.denominator;
+	reduce();
+	return *this;
+}
 
 fraction &fraction::operator-= (const fraction &f){
 	return *this += -f;
@@ -140,6 +171,10 @@ fraction::operator double() const {
 
 fraction operator+ (int i, const fraction& f){
 	return f + i;
+}
+
+fraction operator- (int i, const fraction& f){
+	return -f + i;
 }
 
 int main(){
